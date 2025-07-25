@@ -1,15 +1,6 @@
 from transformers import pipeline, AutoTokenizer, AutoModel, AutoModelForSequenceClassification
 import torch
 
-# classifier = pipeline('sentiment-analysis')
-
-# print(classifier(
-#     [
-#         "I've been waiting for a HuggingFace course my whole life.",
-#         "I hate this so much!"
-#     ]
-# ))
-
 """
 Preprocessing with a tokenizer
 Tokenizer is responsible for:
@@ -125,6 +116,15 @@ To get the labels corresponding to each position, we can inspect the id2label at
 
 print(f'Labels corresponding to each position:\n{model.config.id2label}\n')
 
+# For Comparison
+classifier = pipeline('sentiment-analysis')
+
+print(classifier(
+    [
+        "I've been waiting for a HuggingFace course my whole life.",
+        "I hate this so much!"
+    ]
+))
 
 """
 Summary:
@@ -143,7 +143,7 @@ Model Used in the example: 'distilbert-base-uncased-finetuned-sst-2-english'
 5.) The model heads take the high-dimensional vector of hidden states as input and project them onto a different dimension.
   - Model outputs 'logits'
   - Logits are rae unnormalized scores outputted by the last layer of the model.
-  
+
 6.) Pass the logits through a softmax layer to convert them into probabilities.
 
 """
