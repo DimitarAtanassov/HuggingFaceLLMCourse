@@ -25,7 +25,7 @@ checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
 
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
-print(f'\nTokenizer Created: {tokenizer}\n')
+print(f'\nTokenizer downloaded: \n{tokenizer}\n')
 
 """
 Once we have our tokenizer, we can directly pass our sentences to it and we'll get back a dictionary that's ready to feed to our model.
@@ -35,6 +35,8 @@ Transformer models only accept tensors as input.
 - If this is your first time hearing about tensors, you can think of them as NumPy arrays instead.
 - A NumPy array can be a scalar (0D), a vector (1D), a matrix (2D), or have more dimensions.
 """
+
+print(f'\nTokenizing\n')
 
 # We cannot feed raw inputs into our model
 raw_inputs = [
@@ -50,7 +52,11 @@ model_inputs = tokenizer(raw_inputs, padding=True, truncation=True, return_tenso
 
 # The output itself is a dictionary containing two keys, input_ids and attention_mask
 # input_ids contain two rows of integers (one for each sentence in the input) that are the unique identifiers of the tokens in each sentence.
-print(f'Tokenized Input Strings: {model_inputs}\n')
+print(f'Tokenized Input Strings:\n {model_inputs}\n')
+
+for idx, input_str in enumerate(raw_inputs):
+    print(f'Input String {idx + 1}: {input_str}')
+    print(f'Input String Tokenized: {model_inputs.input_ids[idx]}\n')
 
 # 2.) Going through the model
 print("Downloading a Model\n")
@@ -119,3 +125,25 @@ To get the labels corresponding to each position, we can inspect the id2label at
 
 print(f'Labels corresponding to each position:\n{model.config.id2label}\n')
 
+
+"""
+Summary:
+
+Model Used in the example: 'distilbert-base-uncased-finetuned-sst-2-english'
+
+1.) Downloaded the tokenizer for this model
+2.) Passed two raw input strings into our tokenizer, in order to be able to feed the input strings to the model
+
+3.) Downloaded the base Transformer module
+4.) Fed the tokenized input strings to the downloaded model
+  - Model outputs 'hidden states' also known as 'features'
+  - Hidden states are high dimensional vectors (these types of vectors usually have 3 dimensions)
+  - Hidden states can be useful on their own, but they are usually inputs to another part of the model, known as the 'head'
+
+5.) The model heads take the high-dimensional vector of hidden states as input and project them onto a different dimension.
+  - Model outputs 'logits'
+  - Logits are rae unnormalized scores outputted by the last layer of the model.
+  
+6.) Pass the logits through a softmax layer to convert them into probabilities.
+
+"""
